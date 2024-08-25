@@ -4,7 +4,7 @@ import ProductCard from "../productcard/ProductCard";
 import { Button } from "@mui/material";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 
-const HomeSectionCarousel = () => {
+const HomeSectionCarousel = ({ sectionName }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const responsive = {
     0: { items: 1 },
@@ -17,6 +17,9 @@ const HomeSectionCarousel = () => {
   const items = [1, 1, 1, 1, 1, 1, 1, 1].map((item) => <ProductCard />);
   return (
     <div className="border">
+      <h2 className="text-2xl font-extrabold text-gray-800 py-5">
+        {sectionName}
+      </h2>
       <div className="relative p-5">
         <AliceCarousel
           mouseTracking

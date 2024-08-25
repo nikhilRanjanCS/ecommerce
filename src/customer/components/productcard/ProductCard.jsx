@@ -6,7 +6,7 @@ const ProductCard = () => {
       <div className="h-[13rem] w-[10rem]">
         <img
           className="object-cover object-top w-full h-full"
-          src="https://rukminim2.flixcart.com/image/612/612/xif0q/shirt/h/q/k/m-plain-shirt-greenflair-original-imahyksgghnp3wce.jpeg?q=70"
+          src="https://rukminim2.flixcart.com/image/612/612/xif0q/shoe/7/2/m/6-tm-12-6-trm-white-original-imagjqyzz8z9jrgf.jpeg?q=70"
           alt=""
         />
       </div>

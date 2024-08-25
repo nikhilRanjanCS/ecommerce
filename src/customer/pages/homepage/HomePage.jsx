@@ -7,9 +7,9 @@ const HomePage = () => {
     <div>
       <MainCarousel />
       <div className="py-20 space-y-10 flex flex-col justify-center px-5 lg:px-10">
-        <HomeSectionCarousel />
-        <HomeSectionCarousel />
-        <HomeSectionCarousel />
+        <HomeSectionCarousel sectionName="Men's Shirts" />
+        <HomeSectionCarousel sectionName="Men's Shoes" />
+        <HomeSectionCarousel sectionName="Saree" />
       </div>
     </div>
   );

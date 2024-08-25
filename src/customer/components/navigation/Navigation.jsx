@@ -1,3 +1,17 @@
+/*
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/aspect-ratio'),
+    ],
+  }
+  ```
+*/
 "use client";
 
 import { Fragment, useState } from "react";
@@ -152,7 +166,7 @@ const navigation = {
   ],
 };
 
-export default function Navigation() {
+export default function Example() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -309,7 +323,7 @@ export default function Navigation() {
 
       <header className="relative bg-white">
         <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-          Get free delivery on orders over $100
+          Get free delivery on orders over &#8360;1000
         </p>
 
         <nav
@@ -334,14 +348,14 @@ export default function Navigation() {
                   <span className="sr-only">Your Company</span>
                   <img
                     alt=""
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    className="h-8 w-auto"
+                    src="/images/ecommlogo.jpeg"
+                    className="h-8 w-8 rounded-full"
                   />
                 </a>
               </div>
 
               {/* Flyout menus */}
-              <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch">
+              <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
                 <div className="flex h-full space-x-8">
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
@@ -441,7 +455,7 @@ export default function Navigation() {
               </PopoverGroup>
 
               <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                {/* <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   <a
                     href="#"
                     className="text-sm font-medium text-gray-700 hover:text-gray-800"
@@ -455,9 +469,9 @@ export default function Navigation() {
                   >
                     Create account
                   </a>
-                </div>
+                </div> */}
 
-                <div className="hidden lg:ml-8 lg:flex">
+                {/* <div className="hidden lg:ml-8 lg:flex">
                   <a
                     href="#"
                     className="flex items-center text-gray-700 hover:text-gray-800"
@@ -470,7 +484,7 @@ export default function Navigation() {
                     <span className="ml-3 block text-sm font-medium">CAD</span>
                     <span className="sr-only">, change currency</span>
                   </a>
-                </div>
+                </div> */}
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
