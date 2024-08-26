@@ -15,6 +15,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogBackdrop,
@@ -46,13 +47,13 @@ const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
   { name: "Price: High to Low", href: "#", current: false },
 ];
-const subCategories = [
-  { name: "Totes", href: "#" },
-  { name: "Backpacks", href: "#" },
-  { name: "Travel Bags", href: "#" },
-  { name: "Hip Bags", href: "#" },
-  { name: "Laptop Sleeves", href: "#" },
-];
+// const subCategories = [
+//   { name: "Totes", href: "#" },
+//   { name: "Backpacks", href: "#" },
+//   { name: "Travel Bags", href: "#" },
+//   { name: "Hip Bags", href: "#" },
+//   { name: "Laptop Sleeves", href: "#" },
+// ];
 const filters = [
   {
     id: "color",
@@ -60,7 +61,7 @@ const filters = [
     options: [
       { value: "white", label: "White", checked: false },
       { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
+      { value: "blue", label: "Blue", checked: false },
       { value: "brown", label: "Brown", checked: false },
       { value: "green", label: "Green", checked: false },
       { value: "purple", label: "Purple", checked: false },
@@ -72,7 +73,7 @@ const filters = [
     options: [
       { value: "new-arrivals", label: "New Arrivals", checked: false },
       { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
+      { value: "travel", label: "Travel", checked: false },
       { value: "organization", label: "Organization", checked: false },
       { value: "accessories", label: "Accessories", checked: false },
     ],
@@ -86,7 +87,7 @@ const filters = [
       { value: "12l", label: "12L", checked: false },
       { value: "18l", label: "18L", checked: false },
       { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
+      { value: "40l", label: "40L", checked: false },
     ],
   },
 ];
@@ -97,6 +98,28 @@ function classNames(...classes) {
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleFilters = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+    let filterValues = searchParams.getAll(sectionId);
+    if (filterValues.length > 0 && filterValues[0].split(",").includes(value)) {
+      filterValues = filterValues[0]
+        .split(",")
+        .filter((item) => item !== value);
+      if (filterValues.length === 0) {
+        searchParams.delete(sectionId);
+      }
+    } else {
+      filterValues.push(value);
+    }
+    if (filterValues.length > 0) {
+      searchParams.set(sectionId, filterValues.join(","));
+    }
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  };
 
   return (
     <div className="bg-white">
@@ -131,7 +154,7 @@ export default function Product() {
 
               {/* Filters */}
               <form className="mt-4 border-t border-gray-200">
-                <h3 className="sr-only">Categories</h3>
+                {/* <h3 className="sr-only">Categories</h3>
                 <ul role="list" className="px-2 py-3 font-medium text-gray-900">
                   {subCategories.map((category) => (
                     <li key={category.name}>
@@ -140,7 +163,7 @@ export default function Product() {
                       </a>
                     </li>
                   ))}
-                </ul>
+                </ul> */}
 
                 {filters.map((section) => (
                   <Disclosure
@@ -194,7 +217,7 @@ export default function Product() {
           </div>
         </Dialog>
 
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <main className="mx-auto  px-4 sm:px-6 lg:px-20">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">
               New Arrivals
@@ -259,10 +282,10 @@ export default function Product() {
               Products
             </h2>
 
-            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
               {/* Filters */}
               <form className="hidden lg:block">
-                <h3 className="sr-only">Categories</h3>
+                {/* <h3 className="sr-only">Categories</h3>
                 <ul
                   role="list"
                   className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
@@ -272,7 +295,7 @@ export default function Product() {
                       <a href={category.href}>{category.name}</a>
                     </li>
                   ))}
-                </ul>
+                </ul> */}
 
                 {filters.map((section) => (
                   <Disclosure
@@ -302,6 +325,9 @@ export default function Product() {
                         {section.options.map((option, optionIdx) => (
                           <div key={option.value} className="flex items-center">
                             <input
+                              onChange={() =>
+                                handleFilters(option.value, section.id)
+                              }
                               defaultValue={option.value}
                               defaultChecked={option.checked}
                               id={`filter-${section.id}-${optionIdx}`}
@@ -324,10 +350,10 @@ export default function Product() {
               </form>
 
               {/* Product grid */}
-              <div className="lg:col-span-3 w-full">
+              <div className="lg:col-span-4 w-full">
                 <div className="flex flex-wrap justify-center bg-white py-5">
                   {dataitems.map((item) => (
-                    <ProductCard />
+                    <ProductCard product={item} />
                   ))}
                 </div>
               </div>
