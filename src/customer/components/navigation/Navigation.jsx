@@ -35,6 +35,7 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { Avatar } from "@mui/material";
 
 const navigation = {
   categories: [
@@ -323,7 +324,7 @@ export default function Example() {
 
       <header className="relative bg-white">
         <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-          Get free delivery on orders over &#8360;1000
+          Get free delivery on orders over &#8377;1000
         </p>
 
         <nav
@@ -486,6 +487,15 @@ export default function Example() {
                   </a>
                 </div> */}
 
+                {/* If you encounter an error with the ui, particulary in navigation section, check this
+                part <Avatar></Avatar> section, u have inserted it later after completing the product details
+                and product review part, by yourself, so if an error is found, check this once */}
+                <Avatar
+                  className="text-white"
+                  sx={{ width: 30, height: 30, bgcolor: "#5046e5" }}
+                >
+                  O
+                </Avatar>
                 {/* Search */}
                 <div className="flex lg:ml-6">
                   <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
