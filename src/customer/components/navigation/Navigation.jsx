@@ -35,7 +35,8 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Avatar } from "@mui/material";
+import { Avatar, Menu, MenuItem } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const navigation = {
   categories: [
@@ -167,11 +168,25 @@ const navigation = {
   ],
 };
 
-export default function Example() {
+export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (category, section, item, close) => {
+    navigate(`/${category.id}/${section.id}/${item.name}`);
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white pb-10">
       {/* Mobile menu */}
       <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
         <DialogBackdrop
@@ -329,9 +344,9 @@ export default function Example() {
 
         <nav
           aria-label="Top"
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+          className="mx-auto max-w-none px-4 sm:px-6 lg:px-8"
         >
-          <div className="border-b border-gray-200">
+          <div className="border-b border-gray-200  ">
             <div className="flex h-16 items-center">
               <button
                 type="button"
@@ -424,12 +439,20 @@ export default function Example() {
                                     >
                                       {section.items.map((item) => (
                                         <li key={item.name} className="flex">
-                                          <a
-                                            href={item.href}
-                                            className="hover:text-gray-800"
+                                          <p
+                                            // href={item.href}
+                                            onClick={() =>
+                                              handleCategoryClick(
+                                                category,
+                                                section,
+                                                item,
+                                                close
+                                              )
+                                            }
+                                            className="hover:text-gray-800 cursor-pointer"
                                           >
                                             {item.name}
-                                          </a>
+                                          </p>
                                         </li>
                                       ))}
                                     </ul>
@@ -491,11 +514,29 @@ export default function Example() {
                 part <Avatar></Avatar> section, u have inserted it later after completing the product details
                 and product review part, by yourself, so if an error is found, check this once */}
                 <Avatar
-                  className="text-white"
+                  onClick={handleClick}
+                  className="text-white cursor-pointer"
                   sx={{ width: 30, height: 30, bgcolor: "#5046e5" }}
                 >
                   O
                 </Avatar>
+
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={openMenu}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={() => navigate("/account/orders")}>
+                    My orders
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>Logout</MenuItem>
+                </Menu>
+
                 {/* Search */}
                 <div className="flex lg:ml-6">
                   <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
