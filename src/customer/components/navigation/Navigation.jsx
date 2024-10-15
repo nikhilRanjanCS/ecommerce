@@ -526,7 +526,7 @@ export default function Navigation() {
                       onClick={handleOpen}
                       className="text-sm font-medium text-gray-700 hover:text-gray-800"
                     >
-                      Signin
+                      Login/Signup
                     </Button>
                   )}
                 </div>
