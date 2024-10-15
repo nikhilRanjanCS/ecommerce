@@ -35,8 +35,9 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Avatar, Menu, MenuItem } from "@mui/material";
+import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import AuthModal from "../../Auth/AuthModal";
 
 const navigation = {
   categories: [
@@ -176,13 +177,23 @@ export default function Navigation() {
     navigate(`/${category.id}/${section.id}/${item.name}`);
   };
 
+  const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const openMenu = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const openUserMenu = Boolean(anchorEl);
+  const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+
+  const handleCloseUserMenu = () => {
     setAnchorEl(null);
+  };
+
+  const handleOpen = () => {
+    setOpenAuthModal(true);
+  };
+
+  const handleClose = () => {
+    setOpenAuthModal(false);
   };
 
   return (
@@ -479,64 +490,46 @@ export default function Navigation() {
               </PopoverGroup>
 
               <div className="ml-auto flex items-center">
-                {/* <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Sign in
-                  </a>
-                  <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Create account
-                  </a>
-                </div> */}
+                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                  {false ? (
+                    <div>
+                      <Avatar
+                        onClick={handleOpen}
+                        className="text-white cursor-pointer"
+                        sx={{ width: 30, height: 30, bgcolor: "#5046e5" }}
+                      >
+                        O
+                      </Avatar>
 
-                {/* <div className="hidden lg:ml-8 lg:flex">
-                  <a
-                    href="#"
-                    className="flex items-center text-gray-700 hover:text-gray-800"
-                  >
-                    <img
-                      alt=""
-                      src="https://tailwindui.com/img/flags/flag-canada.svg"
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span className="ml-3 block text-sm font-medium">CAD</span>
-                    <span className="sr-only">, change currency</span>
-                  </a>
-                </div> */}
-
-                {/* If you encounter an error with the ui, particulary in navigation section, check this
-                part <Avatar></Avatar> section, u have inserted it later after completing the product details
-                and product review part, by yourself, so if an error is found, check this once */}
-                <Avatar
-                  onClick={handleClick}
-                  className="text-white cursor-pointer"
-                  sx={{ width: 30, height: 30, bgcolor: "#5046e5" }}
-                >
-                  O
-                </Avatar>
-
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={openMenu}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={() => navigate("/account/orders")}>
-                    My orders
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>Logout</MenuItem>
-                </Menu>
-
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={openUserMenu}
+                        onClose={handleCloseUserMenu}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        <MenuItem onClick={handleCloseUserMenu}>
+                          Profile
+                        </MenuItem>
+                        <MenuItem onClick={() => navigate("/account/orders")}>
+                          My orders
+                        </MenuItem>
+                        <MenuItem onClick={handleCloseUserMenu}>
+                          Logout
+                        </MenuItem>
+                      </Menu>
+                    </div>
+                  ) : (
+                    <Button
+                      onClick={handleOpen}
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      Signin
+                    </Button>
+                  )}
+                </div>
                 {/* Search */}
                 <div className="flex lg:ml-6">
                   <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
@@ -566,6 +559,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   );
 }
