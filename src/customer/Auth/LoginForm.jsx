@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Grid, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/auth/Action";
 const LoginForm = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (jwt) {
+  //     dispatch(getUser(jwt));
+  //   }
+  // }, [jwt, auth.jwt]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
     const userCredentials = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
     };
+    dispatch(login(userCredentials));
     console.log("User cred : ", userCredentials);
   };
 

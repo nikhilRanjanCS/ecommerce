@@ -14,7 +14,7 @@
 */
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -36,8 +36,10 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Avatar, Button, Menu, MenuItem } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthModal from "../../Auth/AuthModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, logout } from "../../../redux/auth/Action";
 
 const navigation = {
   categories: [
@@ -172,6 +174,10 @@ const navigation = {
 export default function Navigation() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { auth } = useSelector((store) => store);
+  const jwt = localStorage.getItem("jwt");
+  const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleCategoryClick = (category, section, item, close) => {
     navigate(`/${category.id}/${section.id}/${item.name}`);
@@ -195,6 +201,26 @@ export default function Navigation() {
   const handleClose = () => {
     setOpenAuthModal(false);
   };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    handleCloseUserMenu();
+  };
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, auth.jwt]);
+
+  useEffect(() => {
+    if (auth.user) {
+      handleClose();
+    }
+    if (location.pathname === "/login" || location.pathname === "/signup") {
+      navigate(-1);
+    }
+  }, [auth.user]);
 
   return (
     <div className="bg-white pb-10">
@@ -491,14 +517,14 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {false ? (
+                  {auth.user?.firstName ? (
                     <div>
                       <Avatar
-                        onClick={handleOpen}
+                        onClick={handleUserClick}
                         className="text-white cursor-pointer"
                         sx={{ width: 30, height: 30, bgcolor: "#5046e5" }}
                       >
-                        O
+                        {auth.user?.firstName[0].toUpperCase()}
                       </Avatar>
 
                       <Menu
@@ -516,9 +542,7 @@ export default function Navigation() {
                         <MenuItem onClick={() => navigate("/account/orders")}>
                           My orders
                         </MenuItem>
-                        <MenuItem onClick={handleCloseUserMenu}>
-                          Logout
-                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </Menu>
                     </div>
                   ) : (
