@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { Button, Grid, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../../redux/auth/Action";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, login } from "../../redux/auth/Action";
 const LoginForm = () => {
+  const jwt = localStorage.getItem("jwt");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { auth } = useSelector((store) => store);
 
   // useEffect(() => {
   //   if (jwt) {
@@ -21,8 +23,8 @@ const LoginForm = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
+    console.log("login user cred : ", userCredentials);
     dispatch(login(userCredentials));
-    console.log("User cred : ", userCredentials);
   };
 
   return (
@@ -46,7 +48,7 @@ const LoginForm = () => {
               name="password"
               label="Password"
               fullWidth
-              autoComplete="passowrd"
+              autoComplete="password"
             />
           </Grid>
           <Grid item xs={12}>

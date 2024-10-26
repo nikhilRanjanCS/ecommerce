@@ -14,8 +14,8 @@
 */
 "use client";
 
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Dialog,
   DialogBackdrop,
@@ -37,6 +37,8 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import ProductCard from "./ProductCard";
+import { useDispatch } from "react-redux";
+import { findProducts } from "../../../redux/product/Action";
 
 const dataitems = [1, 1, 1, 1, 1, 1];
 
@@ -67,17 +69,17 @@ const filters = [
       { value: "purple", label: "Purple", checked: false },
     ],
   },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: false },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
-    ],
-  },
+  // {
+  //   id: "category",
+  //   name: "Category",
+  //   options: [
+  //     { value: "new-arrivals", label: "New Arrivals", checked: false },
+  //     { value: "sale", label: "Sale", checked: false },
+  //     { value: "travel", label: "Travel", checked: false },
+  //     { value: "organization", label: "Organization", checked: false },
+  //     { value: "accessories", label: "Accessories", checked: false },
+  //   ],
+  // },
   {
     id: "size",
     name: "Size",
@@ -101,6 +103,17 @@ export default function Product() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const param = useParams();
+  const dispatch = useDispatch();
+
+  const decodedQueryString = decodeURIComponent(location.search);
+
+  const searchParams = new URLSearchParams(decodedQueryString);
+  const colorValue = searchParams.get("color");
+  const sizeValue = searchParams.get("size");
+  const sortValue = searchParams.get("sort");
+  const pageNumber = searchParams.get("page") || 1;
+
   const handleFilters = (value, sectionId) => {
     const searchParams = new URLSearchParams(location.search);
     let filterValues = searchParams.getAll(sectionId);
@@ -120,6 +133,18 @@ export default function Product() {
     const query = searchParams.toString();
     navigate({ search: `?${query}` });
   };
+
+  useEffect(() => {
+    const data = {
+      category: param.levelThree,
+      colors: colorValue || [],
+      sizes: sizeValue || [],
+      sort: sortValue || "price_low",
+      pageNumber: pageNumber - 1,
+      pageSize: 10,
+    };
+    dispatch(findProducts(data));
+  }, [param.levelThree, colorValue, sizeValue, sortValue, pageNumber]);
 
   return (
     <div className="bg-white">

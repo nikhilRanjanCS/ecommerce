@@ -41,9 +41,10 @@ export const login = (userCredentials) => async (dispatch) =>{
         if(user.jwt){
             localStorage.setItem("jwt",user.jwt);
         }
-        console.log("user : ",user);
+        console.log("jwt : ",user);
         dispatch(loginSuccess(user.jwt));
     } catch (error) {
+        console.log("Login ERROR : ", error.response.data.message);
         dispatch(loginFailure(error.message));
     }
 }
