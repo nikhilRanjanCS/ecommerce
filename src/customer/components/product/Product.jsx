@@ -37,15 +37,15 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import ProductCard from "./ProductCard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { findProducts } from "../../../redux/product/Action";
 
 const dataitems = [1, 1, 1, 1, 1, 1];
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
+  // { name: "Most Popular", href: "#", current: true },
+  // { name: "Best Rating", href: "#", current: false },
+  // { name: "Newest", href: "#", current: false },
   { name: "Price: Low to High", href: "#", current: false },
   { name: "Price: High to Low", href: "#", current: false },
 ];
@@ -105,6 +105,8 @@ export default function Product() {
 
   const param = useParams();
   const dispatch = useDispatch();
+
+  const { product } = useSelector((store) => store);
 
   const decodedQueryString = decodeURIComponent(location.search);
 
@@ -377,9 +379,10 @@ export default function Product() {
               {/* Product grid */}
               <div className="lg:col-span-4 w-full">
                 <div className="flex flex-wrap justify-center bg-white py-5">
-                  {dataitems.map((item) => (
-                    <ProductCard product={item} />
-                  ))}
+                  {product.products &&
+                    product.products?.content?.map((item) => (
+                      <ProductCard product={item} />
+                    ))}
                 </div>
               </div>
             </div>

@@ -131,11 +131,11 @@ const navigation = {
           id: "clothing",
           name: "Clothing",
           items: [
-            { name: "Tops", href: "#" },
+            { name: "Shirts", href: "#" },
             { name: "Pants", href: "#" },
             { name: "Sweaters", href: "#" },
+            { name: "Hoodies", href: "#" },
             { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
             { name: "Activewear", href: "#" },
             { name: "Browse All", href: "#" },
           ],
