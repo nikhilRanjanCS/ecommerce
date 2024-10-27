@@ -39,6 +39,7 @@ import {
 import ProductCard from "./ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { findProducts } from "../../../redux/product/Action";
+import { Pagination } from "@mui/material";
 
 const dataitems = [1, 1, 1, 1, 1, 1];
 
@@ -107,6 +108,7 @@ export default function Product() {
   const dispatch = useDispatch();
 
   const { product } = useSelector((store) => store);
+  console.log(product);
 
   const decodedQueryString = decodeURIComponent(location.search);
 
@@ -115,6 +117,13 @@ export default function Product() {
   const sizeValue = searchParams.get("size");
   const sortValue = searchParams.get("sort");
   const pageNumber = searchParams.get("page") || 1;
+
+  const handlePaginationChange = (event, value) => {
+    const paginationSearchParams = new URLSearchParams(location.search);
+    paginationSearchParams.set("page", value);
+    const query = paginationSearchParams.toString();
+    navigate({ search: `?${query}` });
+  };
 
   const handleFilters = (value, sectionId) => {
     const searchParams = new URLSearchParams(location.search);
@@ -143,7 +152,7 @@ export default function Product() {
       sizes: sizeValue || [],
       sort: sortValue || "price_low",
       pageNumber: pageNumber - 1,
-      pageSize: 10,
+      pageSize: 1,
     };
     dispatch(findProducts(data));
   }, [param.levelThree, colorValue, sizeValue, sortValue, pageNumber]);
@@ -385,6 +394,16 @@ export default function Product() {
                     ))}
                 </div>
               </div>
+            </div>
+          </section>
+
+          <section className="w-full px-[3.6rem]">
+            <div className="px-4 py-5 flex justify-center">
+              <Pagination
+                count={product.products?.totalPages}
+                color="secondary"
+                onChange={handlePaginationChange}
+              />
             </div>
           </section>
         </main>
