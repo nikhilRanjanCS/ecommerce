@@ -21,13 +21,16 @@
 */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Radio, RadioGroup } from "@headlessui/react";
 import { Box, Grid, LinearProgress, Rating } from "@mui/material";
 import ProductReviewCard from "./ProductReviewCard";
 import ProductCard from "../productcard/ProductCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { findProductsById } from "../../../redux/product/Action";
+import { addItemToCart } from "../../../redux/cart/Action";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -84,13 +87,30 @@ function classNames(...classes) {
 }
 
 export default function ProductDetails() {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+  const [selectedSize, setSelectedSize] = useState("");
   const navigate = useNavigate();
+  const params = useParams();
+  const dispatch = useDispatch();
+
+  const { products } = useSelector((store) => store);
 
   const handleAddToBag = () => {
+    const data = {
+      productId: params.productId,
+      size: selectedSize.name,
+      price: products.product?.price,
+      discountedPrice: products.product?.discountedPrice,
+      quantity: product.product?.quantity || 1,
+    };
+    console.log("details---->", data);
+    dispatch(addItemToCart(data));
     navigate("/cart");
   };
+
+  useEffect(() => {
+    const data = { productId: params.productId };
+    dispatch(findProductsById(data));
+  }, [params.productId]);
 
   return (
     <div className="bg-white lg:px-20">
@@ -140,12 +160,12 @@ export default function ProductDetails() {
             <div className="overflow-hidden rounded-lg max-w-[30rem] max-h-[35rem]">
               <img
                 alt={product.images[0].alt}
-                src={product.images[0].src}
+                src={products.product?.imageUrl}
                 className="h-full w-full object-cover object-center"
               />
             </div>
             <div className="flex flex-wrap space-x-5 justify-center">
-              {product.images.map((image) => (
+              {/* {product.images.map((image) => (
                 <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-[5rem] max-h-[5rem] mt-4">
                   <img
                     alt={image.alt}
@@ -153,7 +173,7 @@ export default function ProductDetails() {
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
 
@@ -161,11 +181,10 @@ export default function ProductDetails() {
           <div className="lg:col-span-1 mx-auto max-w-2xl px-4 pb-16 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-24">
             <div className="lg:col-span-2 ">
               <h1 className="text-lg lg:text-xl font-semibold text-gray-900">
-                VeBNoR
+                {products.product?.brand}
               </h1>
               <h1 className="text-lg lg:text-xl text-gray-900 opacity-60 pt-1">
-                Pack of 4 Men Solid Round Neck Polyester Silver, Blue, Black,
-                Grey T-Shirt
+                {products.product?.title}
               </h1>
             </div>
 
@@ -173,9 +192,13 @@ export default function ProductDetails() {
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
               <div className="flex space-x-5 items-center text-lg lg:text-xl text-gray-900 mt-6">
-                <p className="font-semibold">₹249</p>
-                <p className="opacity-50 line-through ">₹999</p>
-                <p className="text-green-600 font-semibold">75% off</p>
+                <p className="font-semibold">
+                  {products.product?.discountedPrice}
+                </p>
+                <p className="opacity-50 line-through ">
+                  {products.product?.price}
+                </p>
+                <p className="text-green-600 font-semibold">{`${products.product?.discountRate}% off`}</p>
               </div>
 
               {/* Reviews */}
@@ -189,7 +212,7 @@ export default function ProductDetails() {
                 </div>
               </div>
 
-              <form className="mt-10">
+              <form className="mt-10" onSubmit={handleAddToBag}>
                 {/* Sizes */}
                 <div className="mt-10">
                   <div className="flex items-center justify-between">
@@ -248,7 +271,7 @@ export default function ProductDetails() {
                 </div>
 
                 <button
-                  onClick={handleAddToBag}
+                  // onClick={handleAddToBag}
                   type="submit"
                   className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >

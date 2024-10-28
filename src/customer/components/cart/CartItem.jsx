@@ -3,27 +3,31 @@ import React from "react";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-const CartItem = () => {
+const CartItem = ({ item }) => {
   return (
     <div className="p-5 shadow-lg border rounded-md">
       <div className="flex items-center">
         <div className="w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem]">
           <img
             className="w-full h-full object-cover object-top"
-            src="https://rukminim2.flixcart.com/image/612/612/xif0q/shirt/n/v/v/xs-10-combo-465-313-tigersnake-original-imagxzawrkphjcch.jpeg?q=70"
-            alt=""
+            src={item.product.imageUrl}
+            alt="Product Image"
           />
         </div>
         <div className="ml-5 space-y-1">
-          <p className="font-semibold">
-            Men Regular Fit Printed Spread Collar Casual Shirt (Pack of 2)
+          <p className="font-semibold">{item.product.title}</p>
+          <p className="opacity-70">
+            {`Size : ${item.size || item.product.size}, ${
+              item.color || item.product.color
+            }`}{" "}
           </p>
-          <p className="opacity-70">Size : L, White </p>
-          <p className="opacity-70 mt-2">Seller : AKENTERPRISE9</p>
+          <p className="opacity-70 mt-2">{item.product.brand}</p>
           <div className="flex space-x-5 items-center  text-gray-900 mt-6">
-            <p className="font-semibold text-lg">₹249</p>
-            <p className="opacity-50 line-through ">₹999</p>
-            <p className="text-green-600 font-semibold">75% off</p>
+            <p className="font-semibold text-lg">{`₹${item.discountedPrice}`}</p>
+            <p className="opacity-50 line-through ">{`₹${item.price}`}</p>
+            <p className="text-green-600 font-semibold">
+              {`${item.product.discountRate}% off`}
+            </p>
           </div>
         </div>
       </div>
