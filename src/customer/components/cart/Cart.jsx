@@ -13,9 +13,11 @@ const Cart = () => {
   const handleCheckout = () => {
     navigate("/checkout/?step=2");
   };
+
   useEffect(() => {
     dispatch(getCart());
-  }, []);
+  }, [cart.updateCartItem, cart.deleteCartItem, cart.addCartItem]);
+
   return (
     <div>
       <div className="lg:grid grid-cols-3 lg:px-16 relative pt-8">
