@@ -1,8 +1,15 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import AddressCard from "../address/AddressCard";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../../../redux/order/Action";
+import { useNavigate } from "react-router-dom";
+import { getUser } from "../../../redux/auth/Action";
 
 const DeliveryAddressForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -14,14 +21,20 @@ const DeliveryAddressForm = () => {
       city: data.get("city"),
       state: data.get("state"),
       pinCode: data.get("pinCode"),
-      mobileNumber: data.get("mobileNumber"),
+      mobile: data.get("mobile"),
     };
-    console.log("address : ", address);
+    const orderData = {
+      address,
+      navigate,
+    };
+    console.log("mobile number submitted", address.mobile);
+    dispatch(createOrder(orderData));
+    console.log("orderData : ", orderData);
   };
   return (
     <div>
       <Grid container spacing={4}>
-        <Grid
+        {/* <Grid
           //   item
           sx={12}
           lg={5}
@@ -29,16 +42,9 @@ const DeliveryAddressForm = () => {
         >
           <div className="p-5 py-7 border-b cursor-pointer">
             <AddressCard />
-            <Button
-              sx={{ mt: 2, bgcolor: "#5046e5" }}
-              size="large"
-              variant="contained"
-            >
-              Deliver Here
-            </Button>
           </div>
-        </Grid>
-        <Grid item xs={12} lg={7}>
+        </Grid> */}
+        <Grid item xs={12} lg={12}>
           <Box className="border rounded-md shadow-md p-5">
             <form onSubmit={handleSubmit}>
               <Grid container spacing={3}>
@@ -107,8 +113,8 @@ const DeliveryAddressForm = () => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     required
-                    id="mobileNumber"
-                    name="mobileNumber"
+                    id="mobile"
+                    name="mobile"
                     label="Mobile Number"
                     fullWidth
                     autoComplete="given-name"

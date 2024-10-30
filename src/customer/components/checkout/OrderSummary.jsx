@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AddressCard from "../address/AddressCard";
 import { Divider } from "@mui/material";
 import CartItem from "../cart/CartItem";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderById } from "../../../redux/order/Action";
+import { useLocation } from "react-router-dom";
 
 const OrderSummary = () => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { order } = useSelector((store) => store);
+  const searchParams = new URLSearchParams(location.search);
+  const orderId = searchParams.get("order_id");
+  useEffect(() => {
+    dispatch(getOrderById(orderId));
+  }, [orderId]);
+
   return (
     <div>
       <div className="p-5 shadow-lg rounded-md border ">
-        <AddressCard />
+        <AddressCard shippingAddress={order.order?.shippingAddress} />
       </div>
       <div>
         <div className="lg:grid grid-cols-3 lg:px-16 relative pt-8">
           <div className="col-span-2">
-            {[1, 1, 1].map((cartItem) => (
-              <CartItem />
+            {order.order?.orderItems.map((cartItem) => (
+              <CartItem item={cartItem} />
             ))}
           </div>
           <div className="px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0">
