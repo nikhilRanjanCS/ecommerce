@@ -15,7 +15,7 @@ const OrderSummary = () => {
   useEffect(() => {
     dispatch(getOrderById(orderId));
   }, [orderId]);
-
+  console.log;
   return (
     <div>
       <div className="p-5 shadow-lg rounded-md border ">
@@ -37,11 +37,14 @@ const OrderSummary = () => {
               <div className="space-y-3 ">
                 <div className="flex justify-between pt-3 text-black">
                   <span className="pl-3">Price</span>
-                  <span className="pr-3">₹249</span>
+                  <span className="pr-3">{order.order?.totalPrice}</span>
                 </div>
                 <div className="flex justify-between pt-3 ">
                   <span className="pl-3">Discount</span>
-                  <span className="text-green-600 pr-3">-₹29</span>
+                  <span className="text-green-600 pr-3">
+                    {order.order?.totalPrice -
+                      order.order?.totaldiscountedPrice}
+                  </span>
                 </div>
                 <div className="flex justify-between pt-3 text-black">
                   <span className="pl-3">Delivery Charge</span>
@@ -50,7 +53,9 @@ const OrderSummary = () => {
                 <Divider />
                 <div className="flex justify-between pt-3 text-black font-bold text-lg">
                   <span className="pl-3">Total Amount</span>
-                  <span className="pr-3">₹244</span>
+                  <span className="pr-3">
+                    {order.order?.totaldiscountedPrice}
+                  </span>
                 </div>
               </div>
               <button

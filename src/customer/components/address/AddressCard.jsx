@@ -7,20 +7,20 @@ const AddressCard = ({ shippingAddress }) => {
     <div>
       <div className="space-y-3">
         <p className="font-semibold">
-          {shippingAddress.firstName + " " + shippingAddress.lastName}
+          {shippingAddress?.firstName + " " + shippingAddress?.lastName}
         </p>
         <p>
-          {shippingAddress.streetAddress +
+          {shippingAddress?.streetAddress +
             ", " +
-            shippingAddress.city +
+            shippingAddress?.city +
             ", " +
-            shippingAddress.state +
+            shippingAddress?.state +
             " - " +
-            shippingAddress.pinCode}
+            shippingAddress?.pinCode}
         </p>
         <div className="space-y-1">
           <p className="font-semibold">Mobile Number</p>
-          <p>{shippingAddress.mobile}</p>
+          <p>{shippingAddress?.mobile}</p>
         </div>
       </div>
     </div>
