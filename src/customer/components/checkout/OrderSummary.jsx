@@ -11,6 +11,7 @@ const OrderSummary = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { order } = useSelector((store) => store);
+  console.log("order : ", order.order);
   const searchParams = new URLSearchParams(location.search);
   const orderId = searchParams.get("order_id");
   useEffect(() => {

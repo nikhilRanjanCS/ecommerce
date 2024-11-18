@@ -12,6 +12,8 @@ export const createPayment = (orderId) => async (dispatch) => {
         
         const {data} = await api.post(`/api/payments/${orderId}`,{});
 
+        console.log("data------=====------>", data);
+
         if(data.paymentLinkUrl){
             window.location.href = data.paymentLinkUrl;
         }
@@ -28,7 +30,7 @@ export const updatePayment = (reqData) => async (dispatch) => {
 
     try {
         
-        const {data} = await api.get(`/api/payments?paymentId=${reqData.paymentId}&orderId=${reqData.orderId}`);
+        const {data} = await api.get(`/api/payments?payment_id=${reqData.paymentId}&order_id=${reqData.orderId}`);
         
         console.log("update payment--->", data);
 

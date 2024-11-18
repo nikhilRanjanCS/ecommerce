@@ -12,19 +12,24 @@ const PaymentSuccess = () => {
   const [referenceId, setReferenceId] = useState();
   const [paymentStatus, setPaymentStatus] = useState();
   const { orderId } = useParams();
+  console.log("orderId :--- ", orderId);
   const dispatch = useDispatch();
   const { order } = useSelector((store) => store);
 
+  console.log("order : ", order.order);
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    setPaymentId(urlParams.get("razorpay_payment_link_id"));
+    setPaymentId(urlParams.get("razorpay_payment_id"));
     setPaymentStatus(urlParams.get("razorpay_payment_link_status"));
   }, []);
 
   useEffect(() => {
-    const data = { orderId, paymentId };
-    dispatch(getOrderById(orderId));
-    dispatch(updatePayment(data));
+    if (paymentId) {
+      const data = { orderId, paymentId };
+      dispatch(getOrderById(orderId));
+      dispatch(updatePayment(data));
+    }
   }, [orderId, paymentId]);
 
   return (
@@ -42,7 +47,7 @@ const PaymentSuccess = () => {
       <OrderTracker activeStep={1} />
 
       <Grid container className="space-y-5 py-5 pt-20">
-        {[1, 1, 1].map((item) => (
+        {order.order?.orderItems.map((item) => (
           <Grid
             container
             item
@@ -53,22 +58,24 @@ const PaymentSuccess = () => {
               <div className="flex items-center">
                 <img
                   className="w-[5rem] h-[5rem] object-cover object-top"
-                  src="https://rukminim2.flixcart.com/image/612/612/xif0q/shirt/n/o/k/xl-usshtfx0111-u-s-polo-assn-original-imagzg4ekxez7mvj.jpeg?q=70"
+                  src={item.product.imageUrl}
                   alt="cart-item-image"
                 />
                 <div className="ml-5 space-y-2">
-                  <p>item.product.title</p>
-                  <div className="flex flex-col opacity-50 text-xs font-semibold space-x-5">
-                    <span>Color : </span>
-                    <span>Size : </span>
+                  <p>{item.product.title}</p>
+                  <div className="opacity-50 text-xs font-semibold space-x-5">
+                    <span>Color : {item.product.color}</span>
+                    <span>Size :{item.size} </span>
                   </div>
-                  <p>Seller : </p>
-                  <p>Price : </p>
+                  <p>Seller :{item.product.brand} </p>
+                  <p>Price :{item.product.price} </p>
                 </div>
               </div>
             </Grid>
             <Grid item>
-              <AddressCard shippingAddress={1}></AddressCard>
+              <AddressCard
+                shippingAddress={order.order?.shippingAddress}
+              ></AddressCard>
             </Grid>
           </Grid>
         ))}
