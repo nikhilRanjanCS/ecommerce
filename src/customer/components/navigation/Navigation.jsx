@@ -208,7 +208,7 @@ export default function Navigation() {
   };
 
   useEffect(() => {
-    if (jwt) {
+    if (auth.jwt) {
       dispatch(getUser(jwt));
     }
   }, [jwt, auth.jwt]);

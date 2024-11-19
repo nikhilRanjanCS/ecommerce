@@ -11,11 +11,11 @@ const SignupForm = () => {
 
   const { auth } = useSelector((store) => store);
 
-  useEffect(() => {
-    if (jwt) {
-      dispatch(getUser(jwt));
-    }
-  }, [jwt, auth.jwt]);
+  // useEffect(() => {
+  //   if (jwt) {
+  //     dispatch(getUser(jwt));
+  //   }
+  // }, [jwt, auth.jwt]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
