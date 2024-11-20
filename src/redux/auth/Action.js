@@ -29,7 +29,7 @@ export const register = (userCredentials) => async (dispatch) =>{
         console.log("Returned : ",user);
         dispatch(registerSuccess(user.jwt));
     } catch (error) {
-        dispatch(registerFailure(error.message));
+        dispatch(registerFailure(error?.message));
     }
 }
 
@@ -44,7 +44,7 @@ export const login = (userCredentials) => async (dispatch) =>{
         console.log("jwt : ",user);
         dispatch(loginSuccess(user.jwt));
     } catch (error) {
-        console.log("Login ERROR : ", error.response.data.message);
+        console.log("Login ERROR : ", error.response?.data?.message);
         dispatch(loginFailure(error.message));
     }
 }
@@ -61,7 +61,7 @@ export const getUser = (jwt) => async (dispatch) =>{
         console.log("User Details : ",user);
         dispatch(getUserSuccess(user));
     } catch (error) {
-        dispatch(getUserFailure(error.message));
+        dispatch(getUserFailure(error?.message));
     }
 }
 
