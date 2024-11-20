@@ -44,7 +44,7 @@ export const login = (userCredentials) => async (dispatch) =>{
         console.log("jwt : ",user);
         dispatch(loginSuccess(user.jwt));
     } catch (error) {
-        console.log("Login ERROR : ", error.response?.data?.message);
+        console.log("Login ERROR : ", error?.response?.data?.message);
         dispatch(loginFailure(error.message));
     }
 }
