@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Grid, TextField } from "@mui/material";
+import { Alert, Button, Grid, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, login } from "../../redux/auth/Action";
@@ -8,6 +8,7 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { auth } = useSelector((store) => store);
+  const { error } = auth;
 
   // useEffect(() => {
   //   if (jwt) {
@@ -23,7 +24,7 @@ const LoginForm = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    console.log("login user cred : ", userCredentials);
+    // console.log("login user cred : ", userCredentials);
     dispatch(login(userCredentials));
   };
 
@@ -64,6 +65,11 @@ const LoginForm = () => {
           </Grid>
         </Grid>
       </form>
+      {error && (
+        <Alert severity="error" variant="outlined" sx={{ marginTop: 2 }}>
+          Invalid username and password!
+        </Alert>
+      )}
       <div className="flex justify-center flex-col items-center">
         <div className="py-3 flex items-center">
           <p>Don't have an account?</p>

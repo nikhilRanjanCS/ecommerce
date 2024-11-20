@@ -207,6 +207,10 @@ export default function Navigation() {
     handleCloseUserMenu();
   };
 
+  const handleCartOpen = () => {
+    navigate("/cart");
+  };
+
   useEffect(() => {
     if (auth.jwt) {
       dispatch(getUser(jwt));
@@ -555,7 +559,7 @@ export default function Navigation() {
                   )}
                 </div>
                 {/* Search */}
-                <div className="flex lg:ml-6">
+                {/* <div className="flex lg:ml-6">
                   <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
                     <MagnifyingGlassIcon
@@ -563,21 +567,24 @@ export default function Navigation() {
                       className="h-6 w-6"
                     />
                   </a>
-                </div>
+                </div> */}
 
                 {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
-                    <ShoppingBagIcon
-                      aria-hidden="true"
-                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
-                    </span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
-                </div>
+                {auth.user && (
+                  <div className="ml-4 flow-root lg:ml-6">
+                    <a href="#" className="group -m-2 flex items-center p-2">
+                      <ShoppingBagIcon
+                        aria-hidden="true"
+                        className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                        onClick={handleCartOpen}
+                      />
+                      {/* <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                        0
+                      </span> */}
+                      <span className="sr-only">items in cart, view bag</span>
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
